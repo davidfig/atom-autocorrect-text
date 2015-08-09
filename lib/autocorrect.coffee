@@ -49,14 +49,11 @@ module.exports =
     line = buffer.lineForRow(row)
     end = range.start.column - 1
     start = end
-    until start is 0 or done
-      if line[start] in @punctuation
-        done = true
-        start++
-      else
-        start--
+    while start is not 0 and line[start] in @punctuation
+      start--
     word = line.substr start, end - start + 1
-    @checkWord word, start, end, row
+    last = line[end + 1]
+    @checkWord word, start, end, row, last
 
   isCapital: (letter) ->
     return letter is letter.toUpperCase()
@@ -75,7 +72,7 @@ module.exports =
     {word: 'teh', replace: 'the'}
   ]
 
-  checkWord: (word, start, end, row) ->
+  checkWord: (word, start, end, row, last) ->
     buffer = atom.workspace.getActiveTextEditor().getBuffer()
     for words in @replace
       if words.word is word
@@ -86,6 +83,6 @@ module.exports =
       if @isCapital(word[0]) and @isCapital(word[1]) and not @isCapital(word[2])
         buffer.setTextInRange([[row, start + 1], [row, start + 2]], word[1].toLowerCase())
         @justChanged = true
-    if word.length is 0
+    if word is ' ' and last is ' '
       @justChanged = true
-      buffer.setTextInRange([[row, start - 1], [row, start]], '.')
+      buffer.setTextInRange([[row, start], [row, start + 1]], '.')

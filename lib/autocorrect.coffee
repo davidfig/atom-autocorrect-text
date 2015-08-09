@@ -49,8 +49,13 @@ module.exports =
     line = buffer.lineForRow(row)
     end = range.start.column - 1
     start = end
-    while start is not 0 and line[start] in @punctuation
-      start--
+    done = false;
+    until done or start is 0
+      if line[start] in @punctuation
+        done = true
+        start++
+      else
+        start--
     word = line.substr start, end - start + 1
     last = line[end + 1]
     @checkWord word, start, end, row, last
@@ -69,11 +74,13 @@ module.exports =
     {word: 'fo', replace: 'of'},
     {word: 'probaly', replace: 'probably'},
     {word: 'os', replace: 'so'},
+    {word: 'somwhere', replace: 'somewhere'},
     {word: 'teh', replace: 'the'}
   ]
 
   checkWord: (word, start, end, row, last) ->
     buffer = atom.workspace.getActiveTextEditor().getBuffer()
+    console.log word
     for words in @replace
       if words.word is word
         buffer.setTextInRange([[row, start], [row, end + 1]], words.replace)

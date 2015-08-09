@@ -1,5 +1,5 @@
 {
-  "name": "autocorrect",
+  "name": "autocorrect-text",
   "version": "0.1.0",
   "main": "./lib/autocorrect",
   "description": "Simple autocorrect.",

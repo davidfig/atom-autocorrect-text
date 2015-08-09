@@ -35,7 +35,9 @@ module.exports =
     body = document.querySelector('body')
     @buffer = atom.workspace.getActiveTextEditor().getBuffer()
     @didChange = @buffer.onDidChange (event) =>
-      if (event.newText in @punctuation)
+      if @justChanged
+        @justChanged = false
+      else if event.newText in @punctuation
         @findWord(event.newRange)
 
   end: ->
@@ -67,9 +69,10 @@ module.exports =
     {word: "i'm", replace: "I'm"},
     {word: "i'd", replace: "i'd"},
     {word: 'nwo', replace: 'now'},
+    {word: 'fo', replace: 'of'},
     {word: 'probaly', replace: 'probably'},
     {word: 'os', replace: 'so'},
-    {word: 'teh', replace: 'the'},
+    {word: 'teh', replace: 'the'}
   ]
 
   checkWord: (word, start, end, row) ->
@@ -77,7 +80,12 @@ module.exports =
     for words in @replace
       if words.word is word
         buffer.setTextInRange([[row, start], [row, end + 1]], words.replace)
+        @justChanged = true
         break
     if word.length > 2
       if @isCapital(word[0]) and @isCapital(word[1]) and not @isCapital(word[2])
         buffer.setTextInRange([[row, start + 1], [row, start + 2]], word[1].toLowerCase())
+        @justChanged = true
+    if word.length is 0
+      @justChanged = true
+      buffer.setTextInRange([[row, start - 1], [row, start]], '.')

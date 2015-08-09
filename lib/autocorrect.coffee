@@ -29,11 +29,13 @@ module.exports =
     else
       @end()
 
+  punctuation: [' ', '.', '(', ')', ',', ';'],
+
   start: ->
     body = document.querySelector('body')
     @buffer = atom.workspace.getActiveTextEditor().getBuffer()
     @didChange = @buffer.onDidChange (event) =>
-      if (event.newText is ' ')
+      if (event.newText in @punctuation)
         @findWord(event.newRange)
 
   end: ->
@@ -46,7 +48,7 @@ module.exports =
     end = range.start.column - 1
     start = end
     until start is 0 or done
-      if line[start] in [' ', '.', '(', ')', ',', ';']
+      if line[start] in @punctuation
         done = true
         start++
       else
@@ -58,10 +60,16 @@ module.exports =
     return letter is letter.toUpperCase()
 
   replace: [
+    {word: 'adn', replace: 'and'},
+    {word: 'hae', replace: 'have'}
     {word: 'i', replace: 'I'},
     {word: "i've", replace: "I've"},
     {word: "i'm", replace: "I'm"},
-    {word: "i'd", replace: "i'd"}
+    {word: "i'd", replace: "i'd"},
+    {word: 'nwo', replace: 'now'},
+    {word: 'probaly', replace: 'probably'},
+    {word: 'os', replace: 'so'},
+    {word: 'teh', replace: 'the'},
   ]
 
   checkWord: (word, start, end, row) ->

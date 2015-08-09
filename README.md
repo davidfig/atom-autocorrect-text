@@ -1,5 +1,7 @@
 # autocorrect-text
 
+Currently designed to fix English text
+
 Very simple text autocorrect for atom.io
 - Activates automatically on textfiles (extensions can be optionally defined)
 - Auto capitalizes the i words (I, I'm, I've, etc.)

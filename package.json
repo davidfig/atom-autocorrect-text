@@ -1,0 +1,11 @@
+{
+  "name": "autocorrect",
+  "version": "0.1.0",
+  "main": "./lib/autocorrect",
+  "description": "Simple autocorrect.",
+  "repository": "https://github.com/davidfig/autocorrect",
+  "license": "MIT",
+  "engines": {
+    "atom": "*"
+  }
+}

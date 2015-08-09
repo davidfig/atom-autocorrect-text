@@ -57,10 +57,19 @@ module.exports =
   isCapital: (letter) ->
     return letter is letter.toUpperCase()
 
+  replace: [
+    {word: 'i', replace: 'I'},
+    {word: "i've", replace: "I've"},
+    {word: "i'm", replace: "I'm"},
+    {word: "i'd", replace: "i'd"}
+  ]
+
   checkWord: (word, start, end, row) ->
     buffer = atom.workspace.getActiveTextEditor().getBuffer()
-    if word is 'i'
-      buffer.setTextInRange([[row, start], [row, end + 1]], 'I')
-    else if word.length > 2
+    for words in @replace
+      if words.word is word
+        buffer.setTextInRange([[row, start], [row, end + 1]], words.replace)
+        break
+    if word.length > 2
       if @isCapital(word[0]) and @isCapital(word[1]) and not @isCapital(word[2])
         buffer.setTextInRange([[row, start + 1], [row, start + 2]], word[1].toLowerCase())

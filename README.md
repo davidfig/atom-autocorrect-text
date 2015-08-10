@@ -6,7 +6,7 @@ Very simple text autocorrect for atom.io
 - Activates automatically on textfiles (extensions can be optionally defined)
 - Uses a prepopulated list of simple corrections for mistypings
 - Fixes words with capitals in the first two letters (e.g., "THe" or "FRank")
-- Capitalizes first letter of new sentence
+- Capitalizes first letter of new sentence or document
 
 TODO
 - Editable table with replacements in package settings

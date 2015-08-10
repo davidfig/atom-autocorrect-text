@@ -103,9 +103,7 @@ module.exports =
     # add period when double space after everything except a punctuation (excluding parentheticals)
     oneBack = text[realStart - 1]
     twoBack = text[realStart - 2]
-    console.log oneBack + ',' + twoBack
     if oneBack is ' ' and twoBack not in ['.', ',', ';', ' ']
-      console.log 'change'
       @justChanged = true
       buffer.setTextInRange([[row, start - 1], [row, start]], '.')
 

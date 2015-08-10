@@ -75,12 +75,12 @@ module.exports =
       realStart = buffer.characterIndexForPosition([range.end.row, range.end.column])
       text = buffer.getText()
       lastChar = text[realStart - 2]
-      if lastChar not in ['.', ':', '"']
+      if lastChar not in ['.', ':', '"', String.fromCharCode(10)]
         @justChanged = true
         buffer.transact ->
           text = text.substr(0, realStart - 1) + '.' + text.substr(realStart - 1)
           buffer.setText(text)
-      if doublespace
+      if doublespace and lastChar not in [String.fromCharCode(10)]
         @justChanged = true
         buffer.transact ->
           buffer.insert range.end, cr

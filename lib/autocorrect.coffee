@@ -52,7 +52,7 @@ module.exports =
     else
       @end()
 
-  punctuation: [' ', '.', '(', ')', ',', ';'],
+  punctuation: [' ', '.', '(', ')', ',', ';', '?', '!'],
 
   start: ->
     body = document.querySelector('body')
@@ -75,7 +75,7 @@ module.exports =
       realStart = buffer.characterIndexForPosition([range.end.row, range.end.column])
       text = buffer.getText()
       lastChar = text[realStart - 2]
-      if lastChar not in ['.', ':', '"', String.fromCharCode(10)]
+      if lastChar not in ['.', ':', '?', '!', '"', String.fromCharCode(10)]
         @justChanged = true
         buffer.transact ->
           text = text.substr(0, realStart - 1) + '.' + text.substr(realStart - 1)
@@ -132,7 +132,7 @@ module.exports =
     # add period when double space after everything except a punctuation (excluding parentheticals)
     lastTwo = text.substr(realStart - 1, 2)
     twoBack = text[realStart - 2]
-    if lastTwo is '  ' and twoBack not in ['.', ',', ';', ' ']
+    if lastTwo is '  ' and twoBack not in ['.', ',', ';', ' ', '?', '!']
       @justChanged = true
       buffer.transact ->
         buffer.setTextInRange([[row, start - 1], [row, start]], '.')
@@ -140,7 +140,7 @@ module.exports =
     # capitalize the first letter of a sentence or the document
     notCapitalized = @isLetter(word[0]) and not @isCapital(word[0])
     paragraphStart = text.charCodeAt(realStart - 1) is 10
-    if (realStart - 2 is 0 or text.substr(realStart - 2, 2) is '. ' or paragraphStart) and notCapitalized
+    if notCapitalized and (realStart - 2 <= 0 or (text[realStart - 1] is ' ' and text[realStart - 2] in ['.', '!', '?']) or paragraphStart)
       @justChanged = true
       buffer.transact ->
         buffer.setTextInRange([[row, start], [row, start + 1]], word[0].toUpperCase())

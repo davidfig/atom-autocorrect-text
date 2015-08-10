@@ -138,7 +138,8 @@ module.exports =
 
     # capitalize the first letter of a sentence or the document
     notCapitalized = @isLetter(word[0]) and not @isCapital(word[0])
-    if (realStart - 2 is 0 or text.substr(realStart - 2, 2) is '. ') and notCapitalized
+    paragraphStart = text.charCodeAt(realStart - 1) is 10
+    if (realStart - 2 is 0 or text.substr(realStart - 2, 2) is '. ' or paragraphStart) and notCapitalized
       @justChanged = true
       buffer.transact ->
         buffer.setTextInRange([[row, start], [row, start + 1]], word[0].toUpperCase())

@@ -93,3 +93,7 @@ module.exports =
     if last is '  '
       @justChanged = true
       buffer.setTextInRange([[row, start - 1], [row, start]], '.')
+    realStart = buffer.characterIndexForPosition([row, start])
+    text = buffer.getText()
+    if text.substr(realStart - 2, 2) is '. ' and not @isCapital(word[0])
+      buffer.setTextInRange([[row, start], [row, start + 1]], word[0].toUpperCase())

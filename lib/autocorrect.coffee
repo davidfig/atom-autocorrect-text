@@ -101,9 +101,9 @@ module.exports =
         @justChanged = true
 
     # add period when double space after everything except a punctuation (excluding parentheticals)
-    oneBack = text[realStart - 1]
+    lastTwo = text.substr(realStart - 1, 2)
     twoBack = text[realStart - 2]
-    if oneBack is ' ' and twoBack not in ['.', ',', ';', ' ']
+    if lastTwo is '  ' and twoBack not in ['.', ',', ';', ' ']
       @justChanged = true
       buffer.setTextInRange([[row, start - 1], [row, start]], '.')
 

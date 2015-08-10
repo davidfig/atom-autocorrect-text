@@ -15,6 +15,11 @@ module.exports =
       default: false
       items:
         type: 'boolean'
+    doublespace:
+      title: 'Double space on carriage return'
+      description: 'adds an extra space whenever you press return'
+      type: 'boolean'
+      default: false
 
   activate: (state) ->
     atom.workspace.onDidChangeActivePaneItem @checkForStart.bind(@)
@@ -39,9 +44,18 @@ module.exports =
         @justChanged = false
       else if event.newText in @punctuation
         @findWord(event.newRange)
+      else if event.newText.charCodeAt(0) is 10 and atom.config.get 'autocorrect-text.doublespace'
+        @newLine event.newRange, event.newText.charAt(0)
 
   end: ->
     @didChange?.dispose()
+
+  newLine: (range, cr) ->
+    requestAnimationFrame =>
+      buffer = atom.workspace.getActiveTextEditor().getBuffer()
+      @justChanged = true
+      buffer.transact ->
+        buffer.insert range.end, cr
 
   findWord: (range) ->
     requestAnimationFrame =>

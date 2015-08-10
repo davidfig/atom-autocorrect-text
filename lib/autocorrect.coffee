@@ -57,11 +57,14 @@ module.exports =
       else
         start--
     word = line.substr start, end - start + 1
-    last = line.substr end, 2
-    @checkWord word, start, end, row, last
+    @checkWord word, start, end, row
 
   isCapital: (letter) ->
     return letter is letter.toUpperCase()
+
+  isLetter: (letter) ->
+    code = letter?.charCodeAt(0)
+    return (code >= 65 and code <= 90) or (code >= 97 and code <= 122)
 
   replace: [
     {word: 'adn', replace: 'and'},
@@ -79,21 +82,35 @@ module.exports =
     {word: 'teh', replace: 'the'}
   ]
 
-  checkWord: (word, start, end, row, last) ->
+  checkWord: (word, start, end, row) ->
     buffer = atom.workspace.getActiveTextEditor().getBuffer()
+    realStart = buffer.characterIndexForPosition([row, start])
+    text = buffer.getText()
+
+    # autocorrect replace
     for words in @replace
       if words.word is word
         buffer.setTextInRange([[row, start], [row, end + 1]], words.replace)
         @justChanged = true
         break
+
+    # check for double capital (e.g., FRank)
     if word.length > 2
       if @isCapital(word[0]) and @isCapital(word[1]) and not @isCapital(word[2])
         buffer.setTextInRange([[row, start + 1], [row, start + 2]], word[1].toLowerCase())
         @justChanged = true
-    if last is '  '
+
+    # add period when double space after everything except a punctuation (excluding parentheticals)
+    oneBack = text[realStart - 1]
+    twoBack = text[realStart - 2]
+    console.log oneBack + ',' + twoBack
+    if oneBack is ' ' and twoBack not in ['.', ',', ';', ' ']
+      console.log 'change'
       @justChanged = true
       buffer.setTextInRange([[row, start - 1], [row, start]], '.')
-    realStart = buffer.characterIndexForPosition([row, start])
-    text = buffer.getText()
-    if (realStart - 2 is 0 or text.substr(realStart - 2, 2) is '. ') and not @isCapital(word[0])
+
+    # capitalize the first letter of a sentence or the document
+    notCapitalized = @isLetter(word[0]) and not @isCapital(word[0])
+    if (realStart - 2 is 0 or text.substr(realStart - 2, 2) is '. ') and notCapitalized
+      @justChanged = true
       buffer.setTextInRange([[row, start], [row, start + 1]], word[0].toUpperCase())

@@ -1,5 +1,23 @@
 module.exports =
 
+  replace: [
+    {word: 'adn', replace: 'and'},
+    {word: 'hae', replace: 'have'}
+    {word: 'i', replace: 'I'},
+    {word: "i've", replace: "I've"},
+    {word: "i'm", replace: "I'm"},
+    {word: "i'd", replace: "I'd"},
+    {word: "i'll", replace: "I'll"},
+    {word: 'nwo', replace: 'now'},
+    {word: 'fo', replace: 'of'},
+    {word: 'probaly', replace: 'probably'},
+    {word: 'os', replace: 'so'},
+    {word: 'somwhere', replace: 'somewhere'},
+    {word: 'si', replace: 'is'},
+    {word: 'teh', replace: 'the'},
+    {word: 'regretably', replace: 'regrettably'}
+  ]
+
   config:
     extensions:
       title: 'Autoactivated file extensions'
@@ -91,23 +109,6 @@ module.exports =
     code = letter?.charCodeAt(0)
     return (code >= 65 and code <= 90) or (code >= 97 and code <= 122)
 
-  replace: [
-    {word: 'adn', replace: 'and'},
-    {word: 'hae', replace: 'have'}
-    {word: 'i', replace: 'I'},
-    {word: "i've", replace: "I've"},
-    {word: "i'm", replace: "I'm"},
-    {word: "i'd", replace: "I'd"},
-    {word: "i'll", replace: "I'll"},
-    {word: 'nwo', replace: 'now'},
-    {word: 'fo', replace: 'of'},
-    {word: 'probaly', replace: 'probably'},
-    {word: 'os', replace: 'so'},
-    {word: 'somwhere', replace: 'somewhere'},
-    {word: 'si', replace: 'is'},
-    {word: 'teh', replace: 'the'}
-  ]
-
   checkWord: (word, start, end, row) ->
     buffer = atom.workspace.getActiveTextEditor().getBuffer()
     realStart = buffer.characterIndexForPosition([row, start])
@@ -123,7 +124,7 @@ module.exports =
 
     # check for double capital (e.g., FRank)
     if word.length > 2
-      if @isCapital(word[0]) and @isCapital(word[1]) and not @isCapital(word[2])
+      if @isLetter(word[0]) and @isCapital(word[0]) and @isLetter(word[1]) and @isCapital(word[1]) and @isLetter(word[2]) and not @isCapital(word[2])
         @justChanged = true
         buffer.transact ->
           buffer.setTextInRange([[row, start + 1], [row, start + 2]], word[1].toLowerCase())

@@ -57,7 +57,7 @@ module.exports =
       else
         start--
     word = line.substr start, end - start + 1
-    last = line[end + 1]
+    last = line.substr end, 2
     @checkWord word, start, end, row, last
 
   isCapital: (letter) ->
@@ -80,7 +80,6 @@ module.exports =
 
   checkWord: (word, start, end, row, last) ->
     buffer = atom.workspace.getActiveTextEditor().getBuffer()
-    console.log word
     for words in @replace
       if words.word is word
         buffer.setTextInRange([[row, start], [row, end + 1]], words.replace)
@@ -90,6 +89,6 @@ module.exports =
       if @isCapital(word[0]) and @isCapital(word[1]) and not @isCapital(word[2])
         buffer.setTextInRange([[row, start + 1], [row, start + 2]], word[1].toLowerCase())
         @justChanged = true
-    if word is ' ' and last is ' '
+    if last is '  '
       @justChanged = true
-      buffer.setTextInRange([[row, start], [row, start + 1]], '.')
+      buffer.setTextInRange([[row, start - 1], [row, start]], '.')

@@ -80,6 +80,7 @@ module.exports =
     {word: 'probaly', replace: 'probably'},
     {word: 'os', replace: 'so'},
     {word: 'somwhere', replace: 'somewhere'},
+    {word: 'si', replace: 'is'},
     {word: 'teh', replace: 'the'}
   ]
 

@@ -44,18 +44,28 @@ module.exports =
         @justChanged = false
       else if event.newText in @punctuation
         @findWord(event.newRange)
-      else if event.newText.charCodeAt(0) is 10 and atom.config.get 'autocorrect-text.doublespace'
+      else if event.newText.charCodeAt(0) is 10
         @newLine event.newRange, event.newText.charAt(0)
 
   end: ->
     @didChange?.dispose()
 
-  newLine: (range, cr) ->
+  newLine: (range, cr, doublespace) ->
     requestAnimationFrame =>
+      doublespace = atom.config.get 'autocorrect-text.doublespace'
       buffer = atom.workspace.getActiveTextEditor().getBuffer()
-      @justChanged = true
-      buffer.transact ->
-        buffer.insert range.end, cr
+      realStart = buffer.characterIndexForPosition([range.end.row, range.end.column])
+      text = buffer.getText()
+      lastChar = text[realStart - 2]
+      if lastChar not in ['.', ':', '"']
+        @justChanged = true
+        buffer.transact ->
+          text = text.substr(0, realStart - 1) + '.' + text.substr(realStart - 1)
+          buffer.setText(text)
+      if doublespace
+        @justChanged = true
+        buffer.transact ->
+          buffer.insert range.end, cr
 
   findWord: (range) ->
     requestAnimationFrame =>

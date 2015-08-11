@@ -93,7 +93,7 @@ module.exports =
       end = range.start.column - 1
       start = end
       done = false;
-      until done or start is 0
+      until done or start <= 0
         if line[start] in @punctuation
           done = true
           start++

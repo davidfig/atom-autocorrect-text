@@ -1,22 +1,6 @@
-module.exports =
+fs = require 'fs-extra'
 
-  replace: [
-    {word: 'adn', replace: 'and'},
-    {word: 'hae', replace: 'have'}
-    {word: 'i', replace: 'I'},
-    {word: "i've", replace: "I've"},
-    {word: "i'm", replace: "I'm"},
-    {word: "i'd", replace: "I'd"},
-    {word: "i'll", replace: "I'll"},
-    {word: 'nwo', replace: 'now'},
-    {word: 'fo', replace: 'of'},
-    {word: 'probaly', replace: 'probably'},
-    {word: 'os', replace: 'so'},
-    {word: 'somwhere', replace: 'somewhere'},
-    {word: 'si', replace: 'is'},
-    {word: 'teh', replace: 'the'},
-    {word: 'regretably', replace: 'regrettably'}
-  ]
+module.exports =
 
   config:
     extensions:
@@ -40,8 +24,41 @@ module.exports =
       default: false
 
   activate: (state) ->
+    @loadReplacements()
     atom.workspace.onDidChangeActivePaneItem @checkForStart.bind(@)
     @checkForStart atom.workspace.getActivePaneItem()
+    autocorrect = @
+    requestAnimationFrame =>
+      correctionsView = require atom.packages.getLoadedPackage('spell-check').path + '/lib/corrections-view'
+      correctionsView.prototype.confirmed = (correction) ->
+        @cancel()
+        return unless correction
+        buffer = atom.workspace.getActiveTextEditor().getBuffer()
+        original = buffer.getTextInRange(@marker.getBufferRange())
+        @editor.transact =>
+          @editor.selectMarker(@marker)
+          newRange = @editor.insertText(correction)
+          autocorrect.addToDictionaryPopup original, correction, newRange
+
+  addToDictionary: ->
+    @addToDictionaryDecoration?.destroy()
+    console.log 'adding ' +  + ' to ' +
+    @replace.push {'word': @addToDictionaryOriginal, 'replace': @addToDictionaryCorrection}
+    @saveReplacements()
+
+  addToDictionaryPopup: (original, correction, range) ->
+    @addToDictionaryOriginal = original
+    @addToDictionaryCorrection = correction
+    div = document.createElement('div')
+    div.className = 'btn'
+    div.innerHTML = 'Add to Autocorrect'
+    div.onclick = => @addToDictionary()
+    editor = atom.workspace.getActiveTextEditor()
+    marker = editor.markBufferRange(range[0])
+    @addToDictionaryDecoration = editor.decorateMarker marker, type: 'overlay', item: div, position: 'tail'
+    remove = =>
+      @addToDictionaryDecoration?.destroy()
+    setTimeout remove, 5000
 
   checkForStart: (item) ->
     extensions = (atom.config.get('autocorrect.extensions') || []).map (extension) -> extension.toLowerCase()
@@ -148,3 +165,12 @@ module.exports =
       @justChanged = true
       buffer.transact ->
         buffer.setTextInRange([[row, start], [row, start + 1]], word[0].toUpperCase())
+
+  loadReplacements: ->
+    path = atom.packages.getLoadedPackage('autocorrect-text').path
+    fs.readJson path + '/corrections.json', (err, replace) =>
+      @replace = replace
+
+  saveReplacements: ->
+    path = atom.packages.getLoadedPackage('autocorrect-text').path
+    fs.writeJson path + '/corrections.json', @replace

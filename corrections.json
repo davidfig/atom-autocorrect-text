@@ -1,0 +1,66 @@
+[
+  {
+    "word": "adn",
+    "replace": "and"
+  },
+  {
+    "word": "hae",
+    "replace": "have"
+  },
+  {
+    "word": "i",
+    "replace": "I"
+  },
+  {
+    "word": "i've",
+    "replace": "I've"
+  },
+  {
+    "word": "i'm",
+    "replace": "I'm"
+  },
+  {
+    "word": "i'd",
+    "replace": "I'd"
+  },
+  {
+    "word": "i'll",
+    "replace": "I'll"
+  },
+  {
+    "word": "nwo",
+    "replace": "now"
+  },
+  {
+    "word": "fo",
+    "replace": "of"
+  },
+  {
+    "word": "probaly",
+    "replace": "probably"
+  },
+  {
+    "word": "os",
+    "replace": "so"
+  },
+  {
+    "word": "somwhere",
+    "replace": "somewhere"
+  },
+  {
+    "word": "si",
+    "replace": "is"
+  },
+  {
+    "word": "teh",
+    "replace": "the"
+  },
+  {
+    "word": "regretably",
+    "replace": "regrettably"
+  },
+  {
+    "word": "teh",
+    "replace": "the"
+  }
+]

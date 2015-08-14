@@ -8,5 +8,8 @@
   "engines": {
     "atom": "*"
   },
-  "readmeFilename": "README.md"
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "fs-extra": "^0.23.1"
+  }
 }

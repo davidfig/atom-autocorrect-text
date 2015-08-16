@@ -29,7 +29,8 @@ module.exports =
     @checkForStart atom.workspace.getActivePaneItem()
     autocorrect = @
     requestAnimationFrame =>
-      correctionsView = require atom.packages.getLoadedPackage('spell-check').path + '/lib/corrections-view'
+      return unless spellCheck = atom.packages.getLoadedPackage('spell-check')
+      correctionsView = require spellCheck.path + '/lib/corrections-view'
       correctionsView.prototype.confirmed = (correction) ->
         @cancel()
         return unless correction

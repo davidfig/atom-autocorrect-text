@@ -62,5 +62,45 @@
   {
     "word": "teh",
     "replace": "the"
+  },
+  {
+    "word": "intorduce",
+    "replace": "introduce"
+  },
+  {
+    "word": "consier",
+    "replace": "consider"
+  },
+  {
+    "word": "jsut",
+    "replace": "just"
+  },
+  {
+    "word": "ot",
+    "replace": "to"
+  },
+  {
+    "word": "occassionally",
+    "replace": "occasionally"
+  },
+  {
+    "word": "wiht",
+    "replace": "with"
+  },
+  {
+    "word": "dont",
+    "replace": "don't"
+  },
+  {
+    "word": "berak",
+    "replace": "break"
+  },
+  {
+    "word": "conentrate",
+    "replace": "concentrate"
+  },
+  {
+    "word": "hting",
+    "replace": "thing"
   }
 ]

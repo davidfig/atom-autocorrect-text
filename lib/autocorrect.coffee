@@ -26,6 +26,7 @@ module.exports =
   activate: (state) ->
     @loadReplacements()
     atom.workspace.onDidChangeActivePaneItem @checkForStart.bind(@)
+    atom.workspace.getActiveTextEditor().onDidChange @checkForStart.bind(@)
     @checkForStart atom.workspace.getActivePaneItem()
     autocorrect = @
     requestAnimationFrame =>
@@ -42,8 +43,8 @@ module.exports =
           autocorrect.addToDictionaryPopup original, correction, newRange
 
   addToDictionary: ->
-    @addToDictionaryDecoration?.destroy()
-    console.log 'adding ' +  + ' to ' +
+    return unless @addToDictionaryDecoration
+    @addToDictionaryDecoration.destroy()
     @replace.push {'word': @addToDictionaryOriginal, 'replace': @addToDictionaryCorrection}
     @saveReplacements()
 
@@ -73,6 +74,7 @@ module.exports =
   punctuation: [' ', '.', '(', ')', ',', ';', '?', '!'],
 
   start: ->
+    return if @started
     body = document.querySelector('body')
     buffer = atom.workspace.getActiveTextEditor().getBuffer()
     @didChange = buffer.onDidChange (event) =>
@@ -82,9 +84,11 @@ module.exports =
         @findWord(event.newRange)
       else if event.newText.charCodeAt(0) is 10
         @newLine event.newRange, event.newText.charAt(0)
+    @started = true
 
   end: ->
     @didChange?.dispose()
+    @started = false
 
   newLine: (range, cr, doublespace) ->
     requestAnimationFrame =>

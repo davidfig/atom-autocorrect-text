@@ -1,0 +1,8 @@
+'.platform-darwin atom-workspace':
+    'shift-cmd-L': 'autocorrect:addToDictionary'
+
+'.platform-linux atom-workspace':
+	'shift-ctrl-L': 'autocorrect:addToDictionary'
+
+'.platform-win32 atom-workspace':
+	'shift-ctrl-L': 'autocorrect:addToDictionary'

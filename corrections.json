@@ -102,5 +102,133 @@
   {
     "word": "hting",
     "replace": "thing"
+  },
+  {
+    "word": "temperment",
+    "replace": "temperament"
+  },
+  {
+    "word": "tomrrow",
+    "replace": "tomorrow"
+  },
+  {
+    "word": "remainig",
+    "replace": "remaining"
+  },
+  {
+    "word": "wsa",
+    "replace": "was"
+  },
+  {
+    "word": "wtaching",
+    "replace": "watching"
+  },
+  {
+    "word": "balistic",
+    "replace": "ballistic"
+  },
+  {
+    "word": "thorughout",
+    "replace": "throughout"
+  },
+  {
+    "word": "jetlag",
+    "replace": "jet lag"
+  },
+  {
+    "word": "afer",
+    "replace": "after"
+  },
+  {
+    "word": "beginnign",
+    "replace": "beginning"
+  },
+  {
+    "word": "evne",
+    "replace": "even"
+  },
+  {
+    "word": "Julei",
+    "replace": "Julie"
+  },
+  {
+    "word": "tantrem",
+    "replace": "tantrum"
+  },
+  {
+    "word": "hwat",
+    "replace": "what"
+  },
+  {
+    "word": "beacuse",
+    "replace": "because"
+  },
+  {
+    "word": "somehwat",
+    "replace": "somewhat"
+  },
+  {
+    "word": "hcildren",
+    "replace": "children"
+  },
+  {
+    "word": "anohter",
+    "replace": "another"
+  },
+  {
+    "word": "cancelling",
+    "replace": "canceling"
+  },
+  {
+    "word": "suggstion",
+    "replace": "suggestion"
+  },
+  {
+    "word": "workign",
+    "replace": "working"
+  },
+  {
+    "word": "thougths",
+    "replace": "thoughts"
+  },
+  {
+    "word": "diagonols",
+    "replace": "diagonals"
+  },
+  {
+    "word": "everythign",
+    "replace": "everything"
+  },
+  {
+    "word": "awya",
+    "replace": "away"
+  },
+  {
+    "word": "becuase",
+    "replace": "because"
+  },
+  {
+    "word": "siad",
+    "replace": "said"
+  },
+  {
+    "word": "hsi",
+    "replace": "his"
+  },
+  {
+    "word": "afflicition",
+    "replace": "affliction"
+  },
+  {
+    "word": "yuo",
+    "replace": "you"
+  },
+  {
+    "word": "telelvision",
+    "replace": "television"
+  },
+  {
+    "word": "norally",
+    "replace": "normally"
   }
 ]

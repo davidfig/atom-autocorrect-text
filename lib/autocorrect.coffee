@@ -25,8 +25,8 @@ module.exports =
 
   activate: (state) ->
     @loadReplacements()
-    atom.workspace.onDidChangeActivePaneItem @checkForStart.bind(@)
-    atom.workspace.getActiveTextEditor().onDidChange @checkForStart.bind(@)
+    atom.workspace.onDidChangeActivePaneItem => @checkForStart
+    atom.workspace.getActiveTextEditor().onDidChange => @checkForStart
     @checkForStart atom.workspace.getActivePaneItem()
     autocorrect = @
     requestAnimationFrame =>
@@ -45,7 +45,7 @@ module.exports =
   addToDictionary: ->
     return unless @addToDictionaryDecoration
     @addToDictionaryDecoration.destroy()
-    @replace.push {'word': @addToDictionaryOriginal, 'replace': @addToDictionaryCorrection}
+    @replace[@addToDictionaryOriginal] = @addToDictionaryCorrection
     @saveReplacements()
 
   addToDictionaryPopup: (original, correction, range) ->
@@ -141,12 +141,10 @@ module.exports =
     text = buffer.getText()
 
     # autocorrect replace
-    for words in @replace
-      if words.word is word
+    if replace = @replace[word]
         @justChanged = true
         buffer.transact ->
-          buffer.setTextInRange([[row, start], [row, end + 1]], words.replace)
-        break
+          buffer.setTextInRange([[row, start], [row, end + 1]], replace)
 
     # check for double capital (e.g., FRank)
     if word.length > 2
